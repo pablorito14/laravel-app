@@ -10,7 +10,7 @@
           Agregar Servicio
         </div>
         <div class="card-body">
-        
+          @include('messages')
             
           <!-- <form action="procesar.php?action=factura" method="POST"> -->
           <form action="{{ url('/servicios') }}" method="POST">
@@ -19,7 +19,9 @@
               <div class="col">
                 <div class="form-group">
                   <label for="descripcion">Descripcion</label>
-                  <input type="text" name="descripcion" id="descripcion" class="form-control form-control-sm">
+                  <input type="text" name="descripcion" id="descripcion" 
+                          class="form-control form-control-sm"
+                          value="{{ old('descripcion') }}">
                 </div>
               </div>
             </div>
@@ -27,8 +29,16 @@
               <div class="col">
                 <div class="form-group">
                   <label for="importe">Importe</label>
-                  <input type="number" min="0" name="importe" id="importe" class="form-control form-control-sm">
-                </div>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="importe">$</span>
+                    <input type="number" align="right" name="importe" min=0 
+                          class="form-control text-end" placeholder="0" 
+                          aria-label="importe" aria-describedby="importe"
+                          value="{{ old('importe') }}">
+                    </div>
+                  </div>
+                
+                
               </div>
             </div>
             <div class="row mb-2">

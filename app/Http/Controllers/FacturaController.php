@@ -37,7 +37,7 @@ class FacturaController extends Controller
         $servicios = Servicio::all();
         return view('facturas.create',[
             'servicios' => $servicios,
-            'detalles' => 5
+            'cant_detalles' => 5
         ]);
     }
 
@@ -57,20 +57,21 @@ class FacturaController extends Controller
           $factura->fecha = $request->input('fecha');
           $factura->comprobante = $request->input('comprobante');
           $factura->estado = $request->input('estado');
+          $factura->total = 0;
 
           $factura->save();
 
           $codigos = $request->input('codigo');
           $importes = $request->input('importe');
           for ($i=0; $i < count($codigos); $i++) { 
-            // if($codigos[$i]){
+            if($codigos[$i]){
               $detalle = new DetallesFactura();
               $detalle->factura_id = $factura->id;
               $detalle->servicio_id = $codigos[$i];
               $detalle->importe = $importes[$i];
 
               $detalle->save();
-            // }
+            }
           }
           DB::commit();
           // return 'Factura #'.$factura->id.' guardada';
@@ -80,11 +81,10 @@ class FacturaController extends Controller
           // print_r($th->getMessage());
           // echo '</pre>';
 
-
           DB::rollBack();
 
           return redirect()->route('facturas.create')->withInput()->with(['message_error' => 'Error al guardar factura']);
-          // return 'Error al guardar factura'; // por ahora tengo este error
+          return 'Error al guardar factura'; // por ahora tengo este error
         }
         
     }
@@ -97,17 +97,11 @@ class FacturaController extends Controller
      */
     public function show($id)
     {
-        //
-
-        $factura = DetallesFactura::find($id);
-        echo '<pre>';
-        print_r($factura);
-        echo '</pre>';
-
-        echo '<pre>';
-        print_r($factura->servicio);
-        echo '</pre>';
+        $factura = Factura::find($id);
         
+        $detalles = DetallesFactura::where('factura_id',$factura->id)->get();
+        
+        return view('facturas.detail',['factura' => $factura, 'detalles' => $detalles]);
     }
 
     /**
@@ -118,7 +112,17 @@ class FacturaController extends Controller
      */
     public function edit($id)
     {
-        return view('facturas.edit',['id' => $id]);
+
+      $servicios = Servicio::all();
+      $factura = Factura::find($id);
+      $detalles = DetallesFactura::where('factura_id',$factura->id)->get();
+      
+     
+      return view('facturas.edit',[
+          'servicios' => $servicios,
+          'factura' => $factura,
+          'detalles' => $detalles,
+          'cant_detalles' => 5]);
     }
 
     /**
@@ -144,10 +148,26 @@ class FacturaController extends Controller
      */
     public function destroy($id)
     {
-        echo '<pre>';
-        print_r($id);
-        echo '</pre>';
+      DB::beginTransaction();
+      try {
+        $factura = Factura::find($id);
 
+
+        $detalles_factura = DetallesFactura::where('factura_id',$factura->id)->get();
+        foreach ($detalles_factura as $detalle) {
+          $detalle->delete();
+        }
+
+        $factura->delete();
+
+        DB::commit();
+        // $factura = Factura::();
+        return redirect()->route('facturas.index')->with(['message_success' => 'Factura eliminada']);
+      } catch (\Throwable $th) {
+        //throw $th;
+        DB::rollBack();
+        return redirect()->route('facturas.index')->with(['message_error' => 'Error al eliminar factura']);
+      }
 
     }
 }

@@ -13,56 +13,72 @@
         
 
           <!-- <form action="procesar.php?action=factura" method="POST"> -->
-          <form action="{{ url('facturas/'.$id) }}" method="POST">
+          <form action="{{ url('facturas/'.$factura->id) }}" method="POST">
             @method("PUT")
             @csrf
             <div class="row align-items-end mb-2">
               <div class="col">
                 <div class="form-group">
                   <label for="cliente">Cliente</label>
-                  <input type="text" name="cliente" id="cliente" class="form-control form-control-sm">
+                  <input type="text" name="cliente" id="cliente" class="form-control form-control-sm"
+                        value="{{ $factura->cliente }}">
                 </div>
               </div>
 
               <div class="col">
                 <div class="form-group">
                   <label for="fecha">Fecha</label>
-                  <input type="date" name="fecha" id="fecha" class="form-control form-control-sm">
+                  <input type="date" name="fecha" id="fecha" class="form-control form-control-sm" 
+                          value="{{ $factura->fecha ?? now()->format('Y-m-d') }}">
                 </div>
               </div>
 
               <div class="col">
                 <div class="form-group">
                   <label for="comprobante">Nro de comprobante</label>
-                  <input type="text" name="comprobante" id="comprobante" class="form-control form-control-sm">
+                  <input type="number" name="comprobante" id="comprobante" class="form-control form-control-sm"
+                          value="{{ $factura->comprobante }}">
                 </div>
               </div>
 
-              <div class="col d-grid">
-                <button class="btn btn-primary btn-sm d-block" type="submit">Guardar</button>
+              <div class="col">
+                <div class="form-group">
+                  <label for="estado">Estado</label>
+                  <select class="form-control form-control-sm" name="estado" id="estado">
+                    <option value="0" @selected($factura->estado == 0)>Pendiente</option>
+                    <option value="1" @selected($factura->estado == 1)>Pagada</option>
+
+                  </select>
+                </div>
               </div>
+              
             </div>
 
-          <!-- </form> -->
+          
 
-          <hr>
+            <hr>
 
-          <!-- Cabezera -->
-          <div class="row">
-            <div class="col-8 border-bottom- fw-bold">Código</div>
-            <div class="col-4 border-bottom- fw-bold text-end">Importe</div>
-          </div>
+            <!-- Cabezera -->
+            <div class="row">
+              <div class="col-8 border-bottom- fw-bold">Código</div>
+              <div class="col-4 border-bottom- fw-bold text-end">Importe</div>
+            </div>
 
-          <!-- detalles -->
+            <!-- detalles -->
 
-          <!-- <form action="procesar.php?action=detalles" method="POST"> -->
-            @for($i = 0; $i < 5; $i++)
+          
+            @for($i = 0; $i < $cant_detalles; $i++)
             <div class="row">
               <div class="col-8">
-              <select class="form-select form-select-sm" name="codigo_{{ $i }}" lang="es">
-                <option value="1">select codigos... 111</option>
-                <option value="2">select codigos... 222</option>
-                <option value="3">select codigos... 333</option>
+              <select class="form-select form-select-sm"
+                      name="codigo[]" lang="es" style="max-width: 100%;">
+                <option value="">-- Servicio --</option>
+                @foreach($servicios as $servicio )
+                <option value="{{ $servicio->id }}"
+                        @selected(isset($detalles[$i]) && ($detalles[$i]->servicio_id == $servicio->id))>
+                        {{ $servicio->descripcion }}
+                </option>
+                @endforeach
               </select>
 
 
@@ -75,7 +91,9 @@
                   <!-- <label for="cliente">Importe</label> -->
                   <div class="input-group input-group-sm mb-3">
                     <span class="input-group-text" id="importe">$</span>
-                    <input type="number" align="right" name="importe_{{ $i }}" class="form-control text-end" placeholder="0" aria-label="importe" aria-describedby="importe">
+                    <input type="number" align="right" name="importe[]" class="form-control text-end" 
+                            placeholder="0" aria-label="importe" aria-describedby="importe"
+                            value="{{ (isset($detalles[$i])) ? $detalles[$i]->importe : '' }}">
                   </div>
                 </div>
               </div>

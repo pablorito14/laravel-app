@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'Nueva Factura')
+@section('title', 'Detalle de factura')
 @section('content')
 <div class="container mt-2">
   <div class="row justify-content-center">
@@ -7,7 +7,7 @@
 
       <div class="card">
         <div class="card-header">
-          Nueva factura
+          Detalle factura
         </div>
         <div class="card-body">
           @include('messages')
@@ -52,20 +52,20 @@
               
             </div>
 
-          
+          <!-- </form> -->
 
-            <hr>
+          <hr>
 
-            <!-- Cabezera -->
-            <div class="row">
-              <div class="col-8 border-bottom- fw-bold">Código</div>
-              <div class="col-4 border-bottom- fw-bold text-end">Importe</div>
-            </div>
+          <!-- Cabezera -->
+          <div class="row">
+            <div class="col-8 border-bottom- fw-bold">Código</div>
+            <div class="col-4 border-bottom- fw-bold text-end">Importe</div>
+          </div>
 
-            <!-- detalles -->
+          <!-- detalles -->
 
-          
-            @for($i = 0; $i < $cant_detalles; $i++)
+          <!-- <form action="procesar.php?action=detalles" method="POST"> -->
+            @for($i = 0; $i < $detalles; $i++)
             <div class="row">
               <div class="col-8">
               <select class="form-select form-select-sm"
@@ -117,20 +117,5 @@
 @endsection
 
 @section('script')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/i18n/es.js"></script>
-  
-<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
-<script>
-  $(document).ready(function() {
-      $('.form-select').select2({
-        theme: 'bootstrap-5',
-      });
 
-      $('.form-select').on('select2:open', function (e) {
-        $('input.select2-search__field')[0].focus();
-      });
-  });
-</script>
 @endsection

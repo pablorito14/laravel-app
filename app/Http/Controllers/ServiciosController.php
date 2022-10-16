@@ -36,13 +36,23 @@ class ServiciosController extends Controller
      */
     public function store(Request $request)
     {
+      
+      try {
         $servicio = new Servicio();
         $servicio->descripcion = $request->input('descripcion');
         $servicio->importe = $request->input('importe');
 
         $servicio->save();
+        
+        return redirect()->route('servicios.index')->with(['message_success' => 'Servicio agregado']);
+      } catch (\Throwable $th) {
+        return redirect()->route('servicios.create')
+                        ->withInput()
+                        ->with(['message_error' => 'Error al guardar servicio']);
+      }  
+      
 
-        return('Registro guardado');
+        
 
     }
 
@@ -66,8 +76,6 @@ class ServiciosController extends Controller
     public function edit($id)
     {
         $servicio = Servicio::find($id);
-        // $servicio = Servicio::find($id);
-        // return 'asdasd';
         return view('servicios.edit',['servicio' => $servicio]);
     }
 
@@ -97,7 +105,15 @@ class ServiciosController extends Controller
      */
     public function destroy($id)
     {
+      try {
         $servicio = Servicio::find($id);
         $servicio->delete();
+
+        return redirect()->route('servicios.index')->with(['message_success' => 'Servicio eliminado']);
+      } catch (\Throwable $th) {
+        //throw $th;
+        return redirect()->route('servicios.index')->with(['message_error' => 'Error al eliminar servicio']);
+      }
+        
     }
 }

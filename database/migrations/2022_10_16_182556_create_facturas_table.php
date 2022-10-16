@@ -13,16 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('facturas', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->id();
-            $table->string('cliente',50);
-            $table->date('fecha');
-            $table->integer('comprobante');
-            $table->tinyInteger('estado');
-            $table->timestamps();
-        });
+      Schema::create('facturas', function (Blueprint $table) {
+        $table->charset = 'utf8mb4';
+        $table->collation = 'utf8mb4_unicode_ci';
+        $table->id();
+        $table->string('cliente',50);
+        $table->date('fecha');
+        $table->integer('comprobante');
+        $table->tinyInteger('estado');
+        $table->double('total',10,2);
+        $table->timestamps();
+      });
     }
 
     /**

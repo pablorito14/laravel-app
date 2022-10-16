@@ -1,15 +1,16 @@
 @extends('layout')
 
 @section('content')
-<h1>Listado de facturas</h1>
-<a href="{{ route('facturas.create') }}" class="btn btn-success">Nueva factura</a>
+<div class="row">
+  <div class="col-8">
+    <h1>Listado de facturas</h1>
+  </div>
+  <div class="col-4 text-end">
+    <a href="{{ route('facturas.create') }}" class="btn btn-success">Nueva factura</a>
+  </div>
+</div>
 
-<!-- <form action="" method="POST">
-  @csrf
-  @method("DELETE")
-  <button class="btn btn-danger" type="submit">Eliminar </button>
-</form> -->
-
+@include('messages')
 
 <table class="table">
   <thead>
@@ -18,6 +19,7 @@
       <th>Cliente</th>
       <th>Comrobante</th>
       <th>Fecha</th>
+      <th>Estado</th>
       <th></th>
       <th></th>
     </tr>
@@ -29,7 +31,8 @@
       <td>{{ $factura->cliente }}</td>
       <td>{{ $factura->comprobante }}</td>
       <td>{{ $factura->fecha }}</td>
-      <td><a href="{{ url('facturas/'.$factura->id) }}">ver</a></td>
+      <td>{{ ($factura->estado == 0) ? 'Pendiente' : 'Pagada' }}</td>
+      <td><a href="{{ url('facturas/'.$factura->id.'/edit') }}" class="btn btn-sm btn-primary">Editar</a></td>
       <td>
         <form action="{{ url('facturas/'.$factura->id) }}" method="POST">
           @csrf

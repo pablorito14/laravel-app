@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('servicios', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->id();
-            $table->string('descripcion',100);
-            $table->double('importe',10,2);
-            $table->timestamps();
-        });
+      Schema::create('servicios', function (Blueprint $table) {
+        $table->charset = 'utf8mb4';
+        $table->collation = 'utf8mb4_unicode_ci';
+        $table->id();
+        $table->string('descripcion',100);
+        $table->double('importe',10,2);
+        $table->timestamps();
+      });
     }
 
     /**
