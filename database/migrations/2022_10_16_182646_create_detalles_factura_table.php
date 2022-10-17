@@ -13,18 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-      Schema::create('detalles_factura', function (Blueprint $table) {
+      Schema::create('detalles_factura2', function (Blueprint $table) {
         $table->charset = 'utf8mb4';
         $table->collation = 'utf8mb4_unicode_ci';
         $table->id();
         $table->foreignId('factura_id')
-              ->constrained('facturas')
-              ->onUpdate('cascade')
-              ->onDelete('cascade');
+              ->constrained('facturas');
         $table->foreignId('servicio_id')
-              ->constrained('servicios')
-              ->onUpdate('cascade')
-              ->onDelete('cascade');
+              ->constrained('servicios');
         
         $table->double('importe',10,2);
         $table->timestamps();

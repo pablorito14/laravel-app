@@ -6,22 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title')</title>
   
+  <link rel="stylesheet" href="{{ asset('plugins/bootstrap@5.2.2/bootstrap.min.css') }}">
+  <style type="text/css">
+    body{
+      background-color: #f8f9fa;
+    }
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    .custom-invalid{
+      /* background-image: none !important; */
+      border-color: #dc3545;
+    }
 
-
-  
+    hr{
+      margin-top: .5rem;
+      margin-bottom: .5rem;
+    }
+  </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">Facturación</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-end">
         <li class="nav-item">
           <a class="nav-link" href="{{ url('facturas') }}">Facturas</a>
         </li>
@@ -50,11 +61,11 @@
     </div>
   </div>
 </nav>
-  <div class="container">
+  <div class="container-xxl">
     @yield('content')
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="{{ asset('plugins/bootstrap@5.2.2/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('plugins/jQuery@3.6.0/jquery.min.js') }}"></script>
   @yield('script')
 </body>
 </html>

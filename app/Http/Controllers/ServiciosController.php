@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidarServicioRequest;
+use App\Models\DetallesFactura;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ServiciosController extends Controller
 {
@@ -14,7 +17,7 @@ class ServiciosController extends Controller
      */
     public function index()
     {
-        $servicios = Servicio::all();
+        $servicios = Servicio::all()->sortBy('descripcion');
         return view('servicios.index',['servicios' => $servicios]);
     }
 
@@ -34,9 +37,11 @@ class ServiciosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidarServicioRequest $request)
     {
-      
+
+      //validar si no hay otro servicio con el mismo nombre si se necesita
+
       try {
         $servicio = new Servicio();
         $servicio->descripcion = $request->input('descripcion');
@@ -45,15 +50,13 @@ class ServiciosController extends Controller
         $servicio->save();
         
         return redirect()->route('servicios.index')->with(['message_success' => 'Servicio agregado']);
-      } catch (\Throwable $th) {
+      } catch(\Exception $err) {
+        Log::error($err);
         return redirect()->route('servicios.create')
                         ->withInput()
                         ->with(['message_error' => 'Error al guardar servicio']);
       }  
       
-
-        
-
     }
 
     /**
@@ -64,7 +67,8 @@ class ServiciosController extends Controller
      */
     public function show($id)
     {
-        
+        // return '404 - NOT FOUND';
+        return redirect()->route('servicios.index');
     }
 
     /**
@@ -75,8 +79,13 @@ class ServiciosController extends Controller
      */
     public function edit($id)
     {
-        $servicio = Servicio::find($id);
-        return view('servicios.edit',['servicio' => $servicio]);
+      $servicio = Servicio::find($id);
+      if(!$servicio){
+        return redirect()->route('servicios.index')->with(['message_error' => 'Servicio #'.$id.' no encontrado']);
+      }
+      
+      
+      return view('servicios.edit',['servicio' => $servicio]);
     }
 
     /**
@@ -88,12 +97,22 @@ class ServiciosController extends Controller
      */
     public function update(Request $request, $id)
     {
+      $servicio = Servicio::find($id);
+      if(!$servicio){
+        return redirect()->route('servicios.index')->with(['message_error' => 'Servicio #'.$id.' no encontrado']);
+      }
+
+      try {
         $servicio = Servicio::find($id);
         $servicio->descripcion = $request->input('descripcion');
         $servicio->importe = $request->input('importe');
         $servicio->save();
 
-        return 'Servicio modificado';
+        return redirect()->route('servicios.index')->with(['message_success' => 'Servicio actualizado']);
+      } catch(\Exception $err) {
+        Log::error($err);
+        return redirect()->route('servicios.edit',['servicio' => $id])->withInput()->with(['message_error' => 'Error al actualizar servicio']);
+      }
 
     }
 
@@ -105,13 +124,23 @@ class ServiciosController extends Controller
      */
     public function destroy($id)
     {
+      $servicio = Servicio::find($id);
+      if(!$servicio){
+        return redirect()->route('servicios.index')->with(['message_error' => 'Servicio #'.$id.' no encontrado']);
+      }
+
+      $detalles = DetallesFactura::where('servicio_id',$id)->get();
+      if(count($detalles) > 0){
+        return redirect()->route('servicios.index')->with(['message_error' => 'El servicio no se puede eliminar porque fue utilizado en facturas']);
+      } 
+
       try {
-        $servicio = Servicio::find($id);
+        // $servicio = Servicio::find($id);
         $servicio->delete();
 
         return redirect()->route('servicios.index')->with(['message_success' => 'Servicio eliminado']);
-      } catch (\Throwable $th) {
-        //throw $th;
+      } catch(\Exception $err) {
+        Log::error($err);
         return redirect()->route('servicios.index')->with(['message_error' => 'Error al eliminar servicio']);
       }
         
