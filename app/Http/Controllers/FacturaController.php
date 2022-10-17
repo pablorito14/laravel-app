@@ -48,7 +48,9 @@ class FacturaController extends Controller
      */
     public function store(ValidarFacturaRequest $request)
     {
-
+      if(!isset($codigos[0])){
+        return redirect()->route('facturas.create')->withInput()->with(['factura_error' => 'Debe ingresar al menos un item']);
+      }
       DB::beginTransaction();
       try {
         $factura = new Factura();
