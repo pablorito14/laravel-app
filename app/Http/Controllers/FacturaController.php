@@ -104,10 +104,15 @@ class FacturaController extends Controller
      */
     public function show($id)
     {
-        $factura = Factura::find($id);
-        $detalles = DetallesFactura::where('factura_id',$factura->id)->get();
+      $factura = Factura::find($id);
+      if(!$factura){
+        return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
+      }
 
-        return view('facturas.detail',['factura' => $factura, 'detalles' => $detalles]);
+      $factura = Factura::find($id);
+      $detalles = DetallesFactura::where('factura_id',$factura->id)->get();
+
+      return view('facturas.detail',['factura' => $factura, 'detalles' => $detalles]);
     }
 
     /**
@@ -215,7 +220,7 @@ class FacturaController extends Controller
       if(!$factura){
         return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
       }
-      
+
       DB::beginTransaction();
       try {
 
