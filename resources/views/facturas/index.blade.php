@@ -51,10 +51,10 @@
               <td><a href="{{ url('facturas/'.$factura->id) }}" class="btn btn-sm btn-dark d-block">Ver</a></td>
               <td><a href="{{ url('facturas/'.$factura->id.'/edit') }}" class="btn btn-sm btn-primary d-block">Editar</a></td>
               <td>
-                <form action="{{ url('facturas/'.$factura->id) }}" method="POST">
+                <form action="{{ url('facturas/'.$factura->id) }}" method="POST" id="form-{{ $factura->id }}">
                   @csrf
                   @method("DELETE")
-                  <button class="btn btn-sm btn-danger d-block" type="submit" onclick="return confirm('La factura sera eliminada. \n¿Confirmar eliminacion?')">Eliminar </button>
+                  <button class="btn btn-sm btn-danger d-block btn-eliminar" type="submit" data-value="{{ $factura->id }}">Eliminar </button>
                 </form>
               </td>
             </tr>
@@ -66,4 +66,35 @@
   </div>
 </div>
 
+@endsection
+@section('script')
+<link rel="stylesheet" href="{{ asset('plugins/jQuery-Confirm@3.2.2/jquery-confirm.min.css') }}">
+<script src="{{ asset('plugins/jQuery-Confirm@3.2.2/jquery-confirm.min.js') }}"></script>
+<script>
+  $(document).ready(function(){
+
+    $('.btn-eliminar').click(function(e){
+      servicio = $(this).attr('data-value');
+      e.preventDefault();
+    
+      $.confirm({
+        title: 'Confirmar eliminacion!',
+        content: `Quiere eliminar la factura #${servicio}`,
+        type: 'red',
+        typeAnimated: true,
+        buttons: {
+          eliminar:{
+            btnClass: 'btn-red', 
+            action: function () {
+              $('.btn-eliminar').prop('disabled',true);
+              $(`#form-${servicio}`).submit();
+            }
+          },
+          cancelar: function () {
+          },
+        }
+      });
+    })
+  });
+</script>
 @endsection

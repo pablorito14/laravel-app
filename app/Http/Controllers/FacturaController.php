@@ -48,9 +48,12 @@ class FacturaController extends Controller
      */
     public function store(ValidarFacturaRequest $request)
     {
+      $importes = $request->input('importe');
+      $codigos = $request->input('codigo');
       if(!isset($codigos[0])){
         return redirect()->route('facturas.create')->withInput()->with(['factura_error' => 'Debe ingresar al menos un item']);
       }
+
       DB::beginTransaction();
       try {
         $factura = new Factura();
@@ -60,8 +63,8 @@ class FacturaController extends Controller
         $factura->estado = $request->input('estado');
         
 
-        $codigos = $request->input('codigo');
-        $importes = $request->input('importe');
+        
+        
         $total = 0;
         $arrDetalles = [];
         for ($i=0; $i < count($codigos); $i++) { 
@@ -106,6 +109,7 @@ class FacturaController extends Controller
      */
     public function show($id)
     {
+      // $factura = Factura::findOrFail($id);
       $factura = Factura::find($id);
       if(!$factura){
         return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);

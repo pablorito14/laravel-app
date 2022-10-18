@@ -117,7 +117,7 @@
           <div class="row justify-content-end">
             <div class="col-3">
               <div class="col d-grid">
-              <button class="btn btn-primary btn-sm d-block" type="submit">Guardar</button>
+              <button class="btn btn-primary btn-sm d-block" id="btn-guardar" type="submit">Guardar</button>
             </div>
             </div>
           </div>
@@ -139,21 +139,28 @@
 <link href="{{ asset('plugins/select2@4.1.0/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet" />
 <script>
   $(document).ready(function() {
-      $('.form-select').select2({
-        theme: 'bootstrap-5',
-      });
+    $('.form-select').select2({
+      theme: 'bootstrap-5',
+    });
 
-      $('.form-select').on('select2:open', function (e) {
-        $('input.select2-search__field')[0].focus();
-      });
+    $('.form-select').on('select2:open',function (e) {
+      $('input.select2-search__field')[0].focus();
+    });
 
-      $('.form-select').on('change',function(event){
+    $('.form-select').on('change',function(event) {
 
-        let codigo_pos = $(this).attr('id').split('_')[1];
-        let importe = $(this).find('option:selected').attr('importe');
-        $(`#importe_${codigo_pos}`).val(importe);
+      let codigo_pos = $(this).attr('id').split('_')[1];
+      let importe = $(this).find('option:selected').attr('importe');
+      $(`#importe_${codigo_pos}`).val(importe);
 
-        })
+    })
+
+    $('#btn-guardar').click(function() {
+      $(this).prop('disabled',true);
+      $('form').submit()
+    });
+  
+
   });
 </script>
 @endsection

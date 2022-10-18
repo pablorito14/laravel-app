@@ -30,6 +30,9 @@ class ServiciosController extends Controller
     {
         return view('servicios.create');
     }
+    public function nuevo(){
+      return 'asdasda';
+    }
 
     /**
      * Store a newly created resource in storage.

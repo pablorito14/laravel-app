@@ -10,7 +10,7 @@
           <h3>Nuevo Servicio</h3>
           @include('messages')
             
-          <form action="{{ url('/servicios') }}" method="POST" novalidate>
+          <form action="{{ url('/servicios') }}" method="POST" novalidate >
             @csrf
             <div class="row mb-2">
               <div class="col">
@@ -46,7 +46,7 @@
             </div>
             <div class="row justify-content-end mb-2">
               <div class="col-4 mt-2 d-grid">
-                <button class="btn btn-primary btn-sm" type="submit">Guardar</button>
+                <button class="btn btn-primary btn-sm" id="btn-guardar" type="submit">Guardar</button>
               </div>
             </div>
 
@@ -62,7 +62,11 @@
 @section('script')
 
 <script>
-  // $(document).ready(function(){
+  $(document).ready(function() {
+    $('#btn-guardar').click(function() {
+      $(this).prop('disabled',true);
+      $('form').submit()
+    });
   //   $('#descripcion').on('keyup keypress',function(){
   //     if($(this).val() == ''){
   //       $(this).addClass('custom-invalid');
@@ -71,7 +75,9 @@
   //       $(this).removeClass('custom-invalid');
   //     }
   //   })
-  // })
+
+  })
+
 </script>
 
 @endsection

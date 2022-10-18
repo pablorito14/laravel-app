@@ -17,10 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('facturas.index');
 });
-
-Route::get('/hello',[HomeController::class, 'index']);
 
 Route::resource('facturas',FacturaController::class);
 Route::resource('servicios',ServiciosController::class);

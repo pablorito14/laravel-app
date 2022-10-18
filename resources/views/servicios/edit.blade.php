@@ -45,7 +45,7 @@
             </div>
             <div class="row mb-2 justify-content-end">
               <div class="col-4 mt-2 d-grid">
-                <button class="btn btn-primary btn-sm" type="submit">Guardar</button>
+                <button class="btn btn-primary btn-sm" id="btn-guardar" type="submit">Guardar</button>
               </div>
             </div>
 
@@ -59,4 +59,12 @@
 @endsection
 
 @section('script')
+<script>
+  $(document).ready(function() {
+    $('#btn-guardar').click(function() {
+      $(this).prop('disabled',true);
+      $('form').submit()
+    });
+  })
+</script>
 @endsection
