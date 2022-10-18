@@ -6,14 +6,20 @@
       <div class="card shadow">
         <div class="card-body">
           <div class="row align-items-center">
-            <div class="col-8">
+            <div class="col-7">
               <h3>Factura #{{ $factura->id }}</h3>
             </div>
-            <div class="col-4 text-end">
+            <div class="col-5 text-end d-flex- justify-content-end-">
               @if($factura->estado == 0)
-              <span class="alert alert-primary py-1 mb-0"><small>Pendiente</small></span>
+              <span class="alert alert-primary py-1 px-5 mb-0 d-inline-flex"><small>Pendiente</small></span>
+              <form action="{{ url('facturas/'.$factura->id) }}" method="POST" class="d-inline-flex">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-danger btn-sm ms-3 px-4 d-flex- btn-eliminar">Eliminar</button>
+              </form>
+              
               @elseif($factura->estado == 1)
-              <span class="alert alert-success py-1 mb-0"><small>Pagada</small></span>
+              <span class="alert alert-success py-1 px-5 mb-0"><small>Pagada</small></span>
               @else
               <span class="alert alert-danger py-1">error</span>
               @endif
@@ -52,5 +58,33 @@
 @endsection
 
 @section('script')
+<link rel="stylesheet" href="{{ asset('plugins/jQuery-Confirm@3.2.2/jquery-confirm.min.css') }}">
+<script src="{{ asset('plugins/jQuery-Confirm@3.2.2/jquery-confirm.min.js') }}"></script>
+<script>
+  $(document).ready(function(){
 
+    $('.btn-eliminar').click(function(e){
+      servicio = $(this).attr('data-value');
+      e.preventDefault();
+    
+      $.confirm({
+        title: 'Confirmar eliminacion!',
+        content: `Quiere eliminar la factura #${servicio}`,
+        type: 'red',
+        typeAnimated: true,
+        buttons: {
+          eliminar:{
+            btnClass: 'btn-red', 
+            action: function () {
+              $('.btn-eliminar').prop('disabled',true);
+              $(`form`).submit();
+            }
+          },
+          cancelar: function () {
+          },
+        }
+      });
+    })
+  });
+</script>
 @endsection

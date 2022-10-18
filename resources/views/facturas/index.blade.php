@@ -1,5 +1,5 @@
 @extends('layout')
-
+@section('title','Listado de Facturas')
 @section('content')
 
 <div class="row justify-content-center mt-3">
@@ -14,7 +14,6 @@
             <a href="{{ route('facturas.create') }}" class="btn btn-sm btn-success">Agregar factura</a>
           </div>
         </div>
-
         @include('messages')
 
         <table class="table">
@@ -61,6 +60,11 @@
             @endforeach
           </tbody>
         </table>
+        <div class="row">
+          <div class="col">
+          {{ $facturas->links() }}
+          </div>
+        </div>
       </div>
     </div>
   </div>

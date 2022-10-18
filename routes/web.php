@@ -22,3 +22,5 @@ Route::get('/', function () {
 
 Route::resource('facturas',FacturaController::class);
 Route::resource('servicios',ServiciosController::class);
+
+Route::get('/test', [HomeController::class, 'index']);

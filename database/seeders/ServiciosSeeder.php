@@ -16,10 +16,18 @@ class ServiciosSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('servicios')->insert([
-            'descripcion' => Str::random(20),
-            'importe' => 0,
-            'created_at' => now()
-        ]);
+      $data = [];
+
+      for ($i=0; $i < 20; $i++) { 
+        $data[$i] = [
+          // 'descripcion' => Str::random(20),
+          'descripcion' => fake()->words(3, true),
+          'importe' => rand(500,20000),
+          'created_at' => now()
+        ];
+      }
+      DB::table('servicios')->insert($data);
+      /** SEED */
+      // php artisan db:seed --class=ServiciosSeeder
     }
 }

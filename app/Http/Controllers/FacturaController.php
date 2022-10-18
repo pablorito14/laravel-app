@@ -19,7 +19,8 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        $facturas = Factura::all()->sortByDesc('total')->sortByDesc('fecha');
+        // $facturas = Factura::all()->sortByDesc('total')->sortByDesc('fecha');
+        $facturas = Factura::paginate(10);
                                   
         return view('facturas.index',['facturas' => $facturas]);
     }
@@ -31,8 +32,6 @@ class FacturaController extends Controller
      */
     public function create()
     {
-        $titulo = 'Nueva factura';
-
         $servicios = Servicio::all()->sortBy('descripcion');
         return view('facturas.create',[
             'servicios' => $servicios,
@@ -50,7 +49,15 @@ class FacturaController extends Controller
     {
       $importes = $request->input('importe');
       $codigos = $request->input('codigo');
-      if(!isset($codigos[0])){
+
+      $vacio = true;
+      foreach($codigos as $codigo){
+        if($codigo){
+          $vacio = false;
+        }
+      }
+      
+      if($vacio){
         return redirect()->route('facturas.create')->withInput()->with(['factura_error' => 'Debe ingresar al menos un item']);
       }
 

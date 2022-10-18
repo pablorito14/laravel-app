@@ -22,9 +22,9 @@
                 <input type="text" name="cliente" id="cliente" 
                       class="form-control form-control-sm {{ $errors->has('cliente') ? 'custom-invalid' : '' }}"
                       value="{{ $factura->cliente }}">
-                @if ($errors->has('cliente'))
-                  <small class="form-text text-danger">{{ $errors->first('cliente') }}</small>
-                @endif
+                
+                  <small class="form-text text-danger">{{ ($errors->has('cliente')) ?? $errors->first('cliente') }}</small>
+                
               </div>
             </div>
 
@@ -66,65 +66,59 @@
           </div>
 
         
-
-          <hr>
-
-          <!-- Cabezera -->
-          <div class="row mb-2">
-            <div class="col-8 border-bottom- fw-bold">Código</div>
-            <div class="col-4 border-bottom- fw-bold text-end">Importe</div>
-          </div>
-
-          <!-- detalles -->
-
-        
-          @for($i = 0; $i < $cant_detalles; $i++)
-          <input type="hidden" value="{{ $detalles[$i]->id ?? null }}" name="id[]">
-          <div class="row">
-            <div class="col-8">
-            <select class="form-select form-select-sm" id="codigo_{{ $i }}"
-                    name="codigo[]" lang="es" style="max-width: 100%;">
-              <option value="">-- Servicio --</option>
-              @foreach($servicios as $servicio )
-              <option value="{{ $servicio->id }}" importe="{{ $servicio->importe }}"
-                      @selected(isset($detalles[$i]) && ($detalles[$i]->servicio_id == $servicio->id))>
-                      {{ $servicio->descripcion }}
-              </option>
-              @endforeach
-            </select>
-
-
-              <!-- <div class="form-group">
-                <input type="text" name="codigo_1" id="codigo" class="form-control form-control-sm">
-              </div> -->
+          <section class="form-detalles border-top">
+            <!-- Cabezera -->
+            <div class="row mb-2">
+              <div class="col-8 border-bottom- fw-bold">Código</div>
+              <div class="col-4 border-bottom- fw-bold text-end">Importe</div>
             </div>
-            <div class="col-4">
-              <div class="form-group">
-                <!-- <label for="cliente">Importe</label> -->
-                <div class="input-group input-group-sm mb-3">
-                  <span class="input-group-text" id="importe">$</span>
-                  <input type="number" align="right" name="importe[]" id="importe_{{ $i }}" class="form-control text-end" 
-                          placeholder="0" aria-label="importe" aria-describedby="importe"
-                          value="{{ (isset($detalles[$i])) ? $detalles[$i]->importe : '' }}">
+
+            <!-- detalles -->
+
+          
+            @for($i = 0; $i < $cant_detalles; $i++)
+            <input type="hidden" value="{{ $detalles[$i]->id ?? null }}" name="id[]">
+            <div class="row">
+              <div class="col-8">
+                <select class="form-select form-select-sm" id="codigo_{{ $i }}"
+                        name="codigo[]" lang="es" style="max-width: 100%;">
+                  <option value="">-- Servicio --</option>
+                  @foreach($servicios as $servicio )
+                  <option value="{{ $servicio->id }}" importe="{{ $servicio->importe }}"
+                          @selected(isset($detalles[$i]) && ($detalles[$i]->servicio_id == $servicio->id))>
+                          {{ $servicio->descripcion }}
+                  </option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <!-- <label for="cliente">Importe</label> -->
+                  <div class="input-group input-group-sm mb-3">
+                    <span class="input-group-text" id="importe">$</span>
+                    <input type="number" align="right" name="importe[]" id="importe_{{ $i }}" class="form-control text-end" 
+                            placeholder="0" aria-label="importe" aria-describedby="importe"
+                            value="{{ (isset($detalles[$i])) ? $detalles[$i]->importe : '' }}">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          @endfor
-          
-          @if (session('factura_error'))
-          <div class="alert alert-danger py-1">
-              {{ session('factura_error') }} 
-          </div>
-          @endif
+            @endfor
+            
+            @if (session('factura_error'))
+            <div class="alert alert-danger py-1">
+                {{ session('factura_error') }} 
+            </div>
+            @endif
 
-          <div class="row justify-content-end">
-            <div class="col-3">
-              <div class="col d-grid">
-              <button class="btn btn-primary btn-sm d-block" id="btn-guardar" type="submit">Guardar</button>
+            <div class="row justify-content-end">
+              <div class="col-3">
+                <div class="col d-grid">
+                <button class="btn btn-primary btn-sm d-block" id="btn-guardar" type="submit">Guardar</button>
+              </div>
+              </div>
             </div>
-            </div>
-          </div>
+          </section>
         </form>
 
       </div>
@@ -161,7 +155,6 @@
       $(this).prop('disabled',true);
       $('form').submit()
     });
-  
 
   });
 </script>

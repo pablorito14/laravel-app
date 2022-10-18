@@ -1,5 +1,5 @@
 @extends('layout')
-
+@section('title','Listado de Servicios')
 @section('content')
 <div class="row justify-content-center mt-3">
   <div class="col-10">

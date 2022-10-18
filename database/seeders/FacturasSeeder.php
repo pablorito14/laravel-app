@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,12 +17,19 @@ class FacturasSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('facturas')->insert([
-            'cliente' => Str::random(20),
-            'fecha' => now(),
-            'comprobante' => 1231412,
-            'estado' => 0,
-            'created_at' => now()
-        ]);
+
+      $data = [];
+
+      for ($i=0; $i < 50; $i++) { 
+        $data[$i] = [
+          'cliente' => fake()->name(),
+          'fecha' => Carbon::parse(fake()->dateTimeBetween('-1 year')->format('Y-m-d')),
+          'comprobante' => rand(123122,429122),
+          'estado' => rand(0,1),
+          'total' => 0,
+          'created_at' => now()
+        ];
+      }
+      DB::table('facturas')->insert($data);
     }
 }

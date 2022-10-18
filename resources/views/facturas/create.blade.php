@@ -62,8 +62,6 @@
             
           </div>
 
-        
-
           <hr>
 
           <!-- Cabezera -->
@@ -159,8 +157,6 @@
       $(this).prop('disabled',true);
       $('form').submit()
     });
-  
-
   });
 </script>
 @endsection
