@@ -18,7 +18,8 @@ return new class extends Migration
         $table->collation = 'utf8mb4_unicode_ci';
         $table->id();
         $table->foreignId('factura_id')
-              ->constrained('facturas');
+              ->constrained('facturas')
+              ->onDelete('cascade');
         $table->foreignId('servicio_id')
               ->constrained('servicios');
         

@@ -54,8 +54,8 @@
               <th style="width: 5%;">ID</th>
               <th style="width: 50%;">Descripcion</th>
               <th style="width: 10%; text-align: right;">Importe</th>
-              <th style="width: 5%;"></th>
-              <th style="width: 5%;"></th>
+              <th style="width: 7%;"></th>
+              <th style="width: 7%;"></th>
             </tr>
           </thead>
           <tbody>
@@ -68,10 +68,10 @@
                 <a href="{{ url('servicios/'.$servicio->id.'/edit') }}" class="btn btn-sm btn-primary d-block">Editar</a>
               </td>
               <td>
-                <form action="{{ url('servicios/'.$servicio->id) }}" method="POST" id="form-{{ $servicio->id }}">
+                <form action="{{ url('servicios/'.$servicio->id) }}" method="POST" id="form-{{ $servicio->id }}" class="d-grid">
                   @csrf
                   @method("DELETE")
-                  <button class="btn btn-sm btn-danger d-block btn-eliminar" data-value="{{$servicio->id}}" type="submit">Eliminar </button>
+                  <button class="btn btn-sm btn-danger d-block d-flex- btn-eliminar" data-value="{{$servicio->id}}" id="btn-eliminar-{{ $servicio->id }}" type="submit">Eliminar </button>
                 </form>
               </td>
               
@@ -102,6 +102,7 @@
 
     $('.btn-eliminar').click(function(e){
       servicio = $(this).attr('data-value');
+      
       e.preventDefault();
     
       $.confirm({
@@ -114,6 +115,7 @@
             btnClass: 'btn-red', 
             action: function () {
               $('.btn-eliminar').prop('disabled',true);
+              $('#btn-eliminar-'+servicio).html('<i class="fa-solid fa-spinner fa-spin-pulse"></i>');
               $(`#form-${servicio}`).submit();
             }
           },

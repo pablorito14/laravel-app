@@ -77,7 +77,7 @@
 
           
             @for($i = 0; $i < $cant_detalles; $i++)
-            <input type="hidden" value="{{ $detalles[$i]->id ?? null }}" name="id[]">
+            <input type="hidden" value="{{ $factura->detalles[$i]->id ?? null }}" name="id[]">
             <div class="row">
               <div class="col-8">
                 <select class="form-select form-select-sm" id="codigo_{{ $i }}"
@@ -85,7 +85,7 @@
                   <option value="">-- Servicio --</option>
                   @foreach($servicios as $servicio )
                   <option value="{{ $servicio->id }}" importe="{{ $servicio->importe }}"
-                          @selected(isset($detalles[$i]) && ($detalles[$i]->servicio_id == $servicio->id))>
+                          @selected(isset($factura->detalles[$i]) && ($factura->detalles[$i]->servicio_id == $servicio->id))>
                           {{ $servicio->descripcion }}
                   </option>
                   @endforeach
@@ -98,7 +98,7 @@
                     <span class="input-group-text" id="importe">$</span>
                     <input type="number" align="right" name="importe[]" id="importe_{{ $i }}" class="form-control text-end" 
                             placeholder="0" aria-label="importe" aria-describedby="importe"
-                            value="{{ (isset($detalles[$i])) ? $detalles[$i]->importe : '' }}">
+                            value="{{ (isset($factura->detalles[$i])) ? $factura->detalles[$i]->importe : '' }}">
                   </div>
                 </div>
               </div>
@@ -153,6 +153,7 @@
 
     $('#btn-guardar').click(function() {
       $(this).prop('disabled',true);
+      $(this).append('<i class="fa-solid fa-spinner fa-spin-pulse ms-2"></i>');
       $('form').submit()
     });
 

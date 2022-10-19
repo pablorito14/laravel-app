@@ -126,15 +126,15 @@ class FacturaController extends Controller
     public function show($id)
     {
       // $factura = Factura::findOrFail($id);
-      $factura = Factura::find($id);
-      if(!$factura){
-        return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
-      }
+      // $factura = Factura::find($id);
+      // if(!$factura){
+      //   return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
+      // }
 
-      $factura = Factura::find($id);
-      $detalles = DetallesFactura::where('factura_id',$factura->id)->get();
+      $factura = Factura::findOrFail($id);
+      // $detalles = DetallesFactura::where('factura_id',$factura->id)->get();
 
-      return view('facturas.detail',['factura' => $factura, 'detalles' => $detalles]);
+      return view('facturas.detail',['factura' => $factura]);
     }
 
     /**
@@ -145,21 +145,16 @@ class FacturaController extends Controller
      */
     public function edit($id)
     {
-      $factura = Factura::find($id);
+      $factura = Factura::findOrFail($id);
 
-      if(!$factura){
-        return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
-      }
-
+      // if(!$factura){
+      //   return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
+      // }
 
       $servicios = Servicio::all()->sortBy('descripcion');
-      
-      $detalles = DetallesFactura::where('factura_id',$factura->id)->get();
-     
       return view('facturas.edit',[
           'servicios' => $servicios,
           'factura' => $factura,
-          'detalles' => $detalles,
           'cant_detalles' => 5]);
     }
 
@@ -172,6 +167,8 @@ class FacturaController extends Controller
      */
     public function update(ValidarFacturaRequest $request, $id)
     {
+
+      // dd($request->collect());
       $factura = Factura::find($id);
       if(!$factura){
         return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
@@ -238,23 +235,14 @@ class FacturaController extends Controller
     public function destroy($id)
     {
 
-      $factura = Factura::find($id);
-      if(!$factura){
-        return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
-      }
+      $factura = Factura::findOrFail($id);
 
       DB::beginTransaction();
       try {
 
-        $detalles_factura = DetallesFactura::where('factura_id',$factura->id)->get();
-        foreach ($detalles_factura as $detalle) {
-          $detalle->delete();
-        }
-
         $factura->delete();
 
         DB::commit();
-        // $factura = Factura::();
         return redirect()->route('facturas.index')->with(['message_success' => 'Factura eliminada']);
       } catch(\Exception $err) {
         Log::error($err);

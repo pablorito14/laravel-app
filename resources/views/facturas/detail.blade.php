@@ -39,7 +39,7 @@
               <th class="text-end">Importe</th>
             </thead>
             <tbody>
-              @foreach($detalles as $detalle)
+              @foreach($factura->detalles as $detalle)
               <tr>
                 <td>{{ $detalle->servicio->descripcion }}</td>
                 <td class="text-end">$ {{ $detalle->importe }}</td>

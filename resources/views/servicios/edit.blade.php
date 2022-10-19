@@ -63,6 +63,7 @@
   $(document).ready(function() {
     $('#btn-guardar').click(function() {
       $(this).prop('disabled',true);
+      $(this).append('<i class="fa-solid fa-spinner fa-spin-pulse ms-2"></i>')
       $('form').submit()
     });
   })

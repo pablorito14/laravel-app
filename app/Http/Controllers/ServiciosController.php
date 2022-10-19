@@ -19,6 +19,8 @@ class ServiciosController extends Controller
     public function index(Request $request)
     {
       $busqueda = trim($request->input('busqueda'));
+
+
       if($busqueda && $busqueda != ''){
         $servicios = DB::table('servicios')
                         ->where('descripcion','LIKE',"%$busqueda%")
@@ -41,9 +43,6 @@ class ServiciosController extends Controller
     public function create()
     {
         return view('servicios.create');
-    }
-    public function nuevo(){
-      return 'asdasda';
     }
 
     /**
@@ -94,10 +93,10 @@ class ServiciosController extends Controller
      */
     public function edit($id)
     {
-      $servicio = Servicio::find($id);
-      if(!$servicio){
-        return redirect()->route('servicios.index')->with(['message_error' => 'Servicio #'.$id.' no encontrado']);
-      }
+      $servicio = Servicio::findOrFail($id);
+      // if(!$servicio){
+      //   return redirect()->route('servicios.index')->with(['message_error' => 'Servicio #'.$id.' no encontrado']);
+      // }
       
       
       return view('servicios.edit',['servicio' => $servicio]);
@@ -139,10 +138,10 @@ class ServiciosController extends Controller
      */
     public function destroy($id)
     {
-      $servicio = Servicio::find($id);
-      if(!$servicio){
-        return redirect()->route('servicios.index')->with(['message_error' => 'Servicio #'.$id.' no encontrado']);
-      }
+      $servicio = Servicio::findOrFail($id);
+      // if(!$servicio){
+      //   return redirect()->route('servicios.index')->with(['message_error' => 'Servicio #'.$id.' no encontrado']);
+      // }
 
       $detalles = DetallesFactura::where('servicio_id',$id)->get();
       if(count($detalles) > 0){
