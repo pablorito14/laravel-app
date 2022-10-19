@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ServiciosController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,7 @@ Route::get('/', function () {
 });
 
 Route::resource('facturas',FacturaController::class);
-Route::get('facturas/{factura}/pdf',[FacturaController::class,'generarPdf'])->name('facutras.pdf');
+Route::get('facturas/{factura}/pdf',[PDFController::class,'generarPdf'])->name('pdf.factura');
 
 Route::resource('servicios',ServiciosController::class);
 

@@ -6,10 +6,10 @@
       <div class="card shadow">
         <div class="card-body">
           <div class="row align-items-center">
-            <div class="col-7">
+            <div class="col-5">
               <h3>Factura #{{ $factura->id }}</h3>
             </div>
-            <div class="col-5 text-end d-flex- justify-content-end-">
+            <div class="col-7 text-end d-flex- justify-content-end-">
               @if($factura->estado == 0)
               <span class="alert alert-primary py-1 px-5 mb-0 d-inline-flex"><small>Pendiente</small></span>
               <form action="{{ url('facturas/'.$factura->id) }}" method="POST" class="d-inline-flex">
@@ -23,16 +23,15 @@
               @else
               <span class="alert alert-danger py-1">error</span>
               @endif
+              <a class="btn btn-outline-primary btn-sm ms-3 px-4- d-inline-flex" href="{{ url('facturas/'.$factura->id.'/pdf') }}" target="_blank">Generar PDF</a>
+
             </div>
           </div>
 
-          <!-- <h3>Factura #{{ $factura->id }}</h3> -->
-          <!-- <hr> -->
+          
           <p class="my-2"><span class="fw-bold">Cliente:</span> {{ $factura->cliente }}</p>
           <p class="my-2"><span class="fw-bold">Fecha:</span> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $factura->fecha)->format('d/m/Y') }}</p>
           <p class="my-2"><span class="fw-bold">Nro de comprobante:</span> {{ $factura->comprobante }}</p>
-
-          <!-- <hr> -->
 
           <table class="table">
             <thead>

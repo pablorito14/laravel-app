@@ -264,10 +264,5 @@ class FacturaController extends Controller
 
     }
 
-    public function generarPdf($id){
-
-      $factura = Factura::findOrFail($id);
-      
-      return view('facturas.pdf',['factura' => $factura]);
-    }
+    
 }
