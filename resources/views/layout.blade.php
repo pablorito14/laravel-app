@@ -7,6 +7,7 @@
   <title>@yield('title')</title>
   
   <link rel="stylesheet" href="{{ asset('plugins/bootstrap@5.2.2/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('plugins/fontawesome@6.2.2/all.min.css') }}">
   <style type="text/css">
     body{
       background-color: #f8f9fa;
@@ -66,6 +67,7 @@
   </div>
   <script src="{{ asset('plugins/bootstrap@5.2.2/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('plugins/jQuery@3.6.0/jquery.min.js') }}"></script>
+  <script src="{{ asset('plugins/fontawesome@6.2.2/all.min.js') }}"></script>
   @yield('script')
 </body>
 </html>

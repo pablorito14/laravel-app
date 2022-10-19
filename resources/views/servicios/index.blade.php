@@ -8,15 +8,46 @@
     <div class="card shadow">
       <div class="card-body">
         <div class="row align-items-center">
-          <div class="col-8 text-end-">
+          <div class="col-5">
             <h2>Listado de Servicios</h2>
           </div>
-          <div class="col-4 text-end">
+          <div class="col-5">
+            
+            <form action="{{ url('servicios/') }}" method="GET">
+            <div class="form-group">
+              <div class="input-group input-group-sm">
+              
+                <input type="text" name="busqueda" id="busqueda" class="form-control" value="{{ $busqueda ?? '' }}"
+                        placeholder="Descripcion..." aria-label="busqueda" aria-describedby="busqueda">
+                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                <a class="btn btn-outline-secondary" href="{{ url('/servicios') }}">Limpiar busqueda</a>
+                
+                
+              </div>
+            </div>
+            </form>
+          </div>
+          <div class="col-2 d-grid">
             <a href="{{ url('servicios/create') }}" class="btn btn-sm btn-success">Agregar servicio</a>
           </div>
         </div>
   
         @include('messages')
+
+        @if(count($servicios) == 0 && $busqueda == '')
+        <div class="row pt-3">
+          <div class="col text-center">
+            Aun no hay servicios cargados
+          </div>
+        </div>
+        @elseif(count($servicios) == 0 && $busqueda != '')
+        <div class="row pt-3">
+          <div class="col text-center">
+            No se encontraron servicios segun el criterio de busqueda
+          </div>
+        </div>
+        @elseif(count($servicios) > 0)
+
         <table class="table">
           <thead>
             <tr>
@@ -48,6 +79,14 @@
             @endforeach
           </tbody>
         </table>
+        <div class="row">
+          <div class="col">
+          {{ ($busqueda) 
+            ? $servicios->appends(['busqueda' => $busqueda])->links() 
+            : $servicios->links() }}
+          </div>
+        </div>
+        @endif
       </div>
     </div>
   </div>

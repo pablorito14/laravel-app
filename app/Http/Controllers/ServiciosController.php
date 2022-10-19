@@ -6,6 +6,7 @@ use App\Http\Requests\ValidarServicioRequest;
 use App\Models\DetallesFactura;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ServiciosController extends Controller
@@ -15,10 +16,21 @@ class ServiciosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $servicios = Servicio::all()->sortBy('descripcion');
-        return view('servicios.index',['servicios' => $servicios]);
+      $busqueda = trim($request->input('busqueda'));
+      if($busqueda && $busqueda != ''){
+        $servicios = DB::table('servicios')
+                        ->where('descripcion','LIKE',"%$busqueda%")
+                        ->orderBy('descripcion')
+                        ->paginate(10);
+      } else {
+        $servicios = DB::table('servicios')
+                        ->orderBy('descripcion')
+                        ->paginate(10);
+      }
+        
+      return view('servicios.index',['servicios' => $servicios, 'busqueda' => $busqueda]);
     }
 
     /**

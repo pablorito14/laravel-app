@@ -21,6 +21,8 @@ Route::get('/', function () {
 });
 
 Route::resource('facturas',FacturaController::class);
+Route::get('facturas/{factura}/pdf',[FacturaController::class,'generarPdf'])->name('facutras.pdf');
+
 Route::resource('servicios',ServiciosController::class);
 
 Route::get('/test', [HomeController::class, 'index']);

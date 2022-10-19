@@ -7,15 +7,45 @@
     <div class="card shadow">
       <div class="card-body">
         <div class="row align-items-center">
-          <div class="col-8">
+          <div class="col-5">
             <h2>Listado de Facturas</h2>
           </div>
-          <div class="col-4 text-end">
+          <div class="col-5">
+            
+            <form action="{{ url('facturas/') }}" method="GET">
+            <div class="form-group">
+              <div class="input-group input-group-sm">
+              
+                <input type="text" name="busqueda" id="busqueda" class="form-control" value="{{ $busqueda }}"
+                        placeholder="Cliente o nro de comprobante..." aria-label="busqueda" aria-describedby="busqueda">
+                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                <a class="btn btn-outline-secondary" href="{{ url('/facturas') }}">Limpiar busqueda</a>
+                
+                
+              </div>
+            </div>
+            </form>
+          </div>
+          <div class="col-2 d-grid">
             <a href="{{ route('facturas.create') }}" class="btn btn-sm btn-success">Agregar factura</a>
+            
           </div>
         </div>
         @include('messages')
 
+        @if(count($facturas) == 0 && $busqueda == '')
+        <div class="row pt-3">
+          <div class="col text-center">
+            Aun no hay facturas cargadas
+          </div>
+        </div>
+        @elseif(count($facturas) == 0 && $busqueda != '')
+        <div class="row pt-3">
+          <div class="col text-center">
+            No se encontraron facturas segun el criterio de busqueda
+          </div>
+        </div>
+        @elseif(count($facturas) > 0)
         <table class="table">
           <thead>
             <tr>
@@ -25,12 +55,14 @@
               <th class="text-end">Importe</th>
               <th class="text-end" style="width: 10%;">Fecha</th>
               <th class="text-center" style="width: 10%;">Estado</th>
+              
               <th style="width: 5%;"></th>
               <th style="width: 5%;"></th>
               <th style="width: 5%;"></th>
             </tr>
           </thead>
           <tbody>
+            
             @foreach($facturas as $factura)
             <tr class="align-middle">
               <td>{{ $factura->id }}</td>
@@ -47,7 +79,9 @@
                 <span class="alert alert-danger py-1">error</span>
                 @endif
               </td>
-              <td><a href="{{ url('facturas/'.$factura->id) }}" class="btn btn-sm btn-dark d-block">Ver</a></td>
+
+              
+              <td class=""><a href="{{ url('facturas/'.$factura->id) }}" class="btn btn-sm btn-dark d-flex">Ver</a></td>
               <td><a href="{{ url('facturas/'.$factura->id.'/edit') }}" class="btn btn-sm btn-primary d-block">Editar</a></td>
               <td>
                 <form action="{{ url('facturas/'.$factura->id) }}" method="POST" id="form-{{ $factura->id }}">
@@ -58,13 +92,18 @@
               </td>
             </tr>
             @endforeach
+            
           </tbody>
         </table>
         <div class="row">
           <div class="col">
-          {{ $facturas->links() }}
+          {{ ($busqueda) 
+            ? $facturas->appends(['busqueda' => $busqueda])->links() 
+            : $facturas->links() }}
+
           </div>
         </div>
+        @endif
       </div>
     </div>
   </div>

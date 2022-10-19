@@ -17,12 +17,21 @@ class FacturaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // $facturas = Factura::all()->sortByDesc('total')->sortByDesc('fecha');
-        $facturas = Factura::paginate(10);
+      $busqueda = trim($request->input('busqueda'));
+      
+      if($busqueda && $busqueda != ''){
+        $facturas = DB::table('facturas')
+                        ->where('comprobante','LIKE',"%$busqueda%")
+                        ->orWhere('cliente','LIKE',"%$busqueda%")
+                        ->orderByDesc('fecha')
+                        ->orderByDesc('total')->paginate(10);
+      } else {
+        $facturas = DB::table('facturas')->orderByDesc('fecha')->orderByDesc('total')->paginate(10);
+      }
                                   
-        return view('facturas.index',['facturas' => $facturas]);
+      return view('facturas.index',['facturas' => $facturas,'busqueda' => $busqueda]);
     }
 
     /**
@@ -253,5 +262,12 @@ class FacturaController extends Controller
         return redirect()->route('facturas.index')->with(['message_error' => 'Error al eliminar factura']);
       }
 
+    }
+
+    public function generarPdf($id){
+
+      $factura = Factura::findOrFail($id);
+      
+      return view('facturas.pdf',['factura' => $factura]);
     }
 }
