@@ -56,9 +56,9 @@
               <th class="text-end" style="width: 10%;">Fecha</th>
               <th class="text-center" style="width: 10%;">Estado</th>
               
-              <th style="width: 5%;"></th>
-              <th style="width: 7%;"></th>
-              <th style="width: 9%;"></th>
+              <th style="width: 20%;" class="text-center" colspan="3">Acciones</th>
+              <!-- <th style="width: 7%;"></th> -->
+              <!-- <th style="width: 9%;"></th> -->
             </tr>
           </thead>
           <tbody>

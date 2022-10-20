@@ -6,6 +6,7 @@ use App\Http\Requests\ValidarFacturaRequest;
 use App\Models\DetallesFactura;
 use App\Models\Factura;
 use App\Models\Servicio;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -59,14 +60,8 @@ class FacturaController extends Controller
       $importes = $request->input('importe');
       $codigos = $request->input('codigo');
 
-      $vacio = true;
-      foreach($codigos as $codigo){
-        if($codigo){
-          $vacio = false;
-        }
-      }
       
-      if($vacio){
+      if(!Arr::whereNotNull($codigos)){
         return redirect()->route('facturas.create')->withInput()->with(['factura_error' => 'Debe ingresar al menos un item']);
       }
 
@@ -173,14 +168,15 @@ class FacturaController extends Controller
       if(!$factura){
         return redirect()->route('facturas.index')->with(['message_error' => 'Factura #'.$id.' no encontrada']);
       }
-      
+
       $detalles =$request->input('id');
       $importes = $request->input('importe');
       $codigos = $request->input('codigo');
-      if(!isset($codigos[0])){
+      
+      if(!Arr::whereNotNull($codigos)){
         return redirect()->route('facturas.edit',['factura' => $id])->withInput()->with(['factura_error' => 'Debe ingresar al menos un item']);
       }
-
+      
       DB::beginTransaction();
       try {
         
@@ -215,14 +211,14 @@ class FacturaController extends Controller
           
         }
         DB::commit();
-        // return 'Factura #'.$factura->id.' guardada';
+        
         return redirect()->route('facturas.index')->with(['message_success' => 'Factura actualizada']);
       } catch(\Exception $err) {
         Log::error($err);
 
         DB::rollBack();
 
-        return redirect()->route('facturas.create')->withInput()->with(['message_error' => 'Error al actualizar factura']);
+        return redirect()->route('facturas.edit',['factura' => $id])->withInput()->with(['message_error' => 'Error al actualizar factura']);
       }
     }
 

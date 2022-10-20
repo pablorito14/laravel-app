@@ -54,8 +54,9 @@
               <th style="width: 5%;">ID</th>
               <th style="width: 50%;">Descripcion</th>
               <th style="width: 10%; text-align: right;">Importe</th>
-              <th style="width: 7%;"></th>
-              <th style="width: 7%;"></th>
+              <th style="width: 15%;" class="text-center" colspan="2"> Acciones</th>
+              <!-- <th style="width: 7%;"></th> -->
+              <!-- <th style="width: 7%;"></th> -->
             </tr>
           </thead>
           <tbody>
