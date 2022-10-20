@@ -9,22 +9,22 @@
             <div class="col-5">
               <h3>Factura #{{ $factura->id }}</h3>
             </div>
-            <div class="col-7 text-end d-flex- justify-content-end-">
-              @if($factura->estado == 0)
+            <div class="col-7 d-flex justify-content-end">
+            @if($factura->estado == 0)
               <span class="alert alert-primary py-1 px-5 mb-0 d-inline-flex"><small>Pendiente</small></span>
               <form action="{{ url('facturas/'.$factura->id) }}" method="POST" class="d-inline-flex">
                 @csrf
                 @method('DELETE')
-                <button class="btn btn-danger btn-sm ms-3 px-4 d-flex- btn-eliminar">Eliminar</button>
+                <button class="btn btn-danger btn-sm ms-3 px-4 d-flex- btn-eliminar" data-value="{{ $factura->id }}">Eliminar</button>
               </form>
               
               @elseif($factura->estado == 1)
-              <span class="alert alert-success py-1 px-5 mb-0"><small>Pagada</small></span>
+              <span class="alert alert-success py-1 px-5 mb-0 d-inline-flex"><small>Pagada</small></span>
+              <a class="btn btn-outline-primary btn-sm ms-3 px-4- d-inline-flex" href="{{ url('facturas/'.$factura->id.'/pdf') }}" target="_blank">Generar PDF</a>
               @else
               <span class="alert alert-danger py-1">error</span>
               @endif
-              <a class="btn btn-outline-primary btn-sm ms-3 px-4- d-inline-flex" href="{{ url('facturas/'.$factura->id.'/pdf') }}" target="_blank">Generar PDF</a>
-
+              
             </div>
           </div>
 
@@ -63,12 +63,13 @@
   $(document).ready(function(){
 
     $('.btn-eliminar').click(function(e){
-      servicio = $(this).attr('data-value');
+      factura = $(this).attr('data-value');
+      console.log(factura);
       e.preventDefault();
     
       $.confirm({
         title: 'Confirmar eliminacion!',
-        content: `Quiere eliminar la factura #${servicio}`,
+        content: `Quiere eliminar la factura #${factura}`,
         type: 'red',
         typeAnimated: true,
         buttons: {
@@ -76,6 +77,7 @@
             btnClass: 'btn-red', 
             action: function () {
               $('.btn-eliminar').prop('disabled',true);
+              $('.btn-eliminar').append('<i class="fa-solid fa-spinner fa-spin-pulse ms-2"></i>')
               $(`form`).submit();
             }
           },

@@ -8,6 +8,10 @@
     <title>Factura #{{ $factura->id }}</title>
     
     <style>
+      .pt-2{
+        padding-top: .5rem;
+      }
+
       .py-2{
         padding-top: .5rem;
         padding-bottom: .5rem;
@@ -73,7 +77,18 @@
         padding-right: .5rem;
       }
 
-      
+      footer{
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-color: #dee2e6;
+        border-style: solid;
+        border-width: 1px 0 0 0;
+        /* background-color: red; */
+        /* color: white; */
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -101,6 +116,11 @@
     </tbody>
   </table>
   <p class="mt-0 text-end fw-bold px-2 py-2">Total: $ {{ $factura->total }}</p>
-  
+  <footer class="px-2 pt-2">
+    <small>
+      <b>Fecha:</b> {{ \Carbon\Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->format('d/m/Y') }} - <b>Laravel-app</b>
+    </small>
+    
+  </footer>
   </body>
   </html>

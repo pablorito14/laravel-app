@@ -66,7 +66,7 @@
 
           <!-- Cabezera -->
           <div class="row mb-2">
-            <div class="col-8 border-bottom- fw-bold">Código</div>
+            <div class="col-8 border-bottom- fw-bold">Servicio</div>
             <div class="col-4 border-bottom- fw-bold text-end">Importe</div>
           </div>
 

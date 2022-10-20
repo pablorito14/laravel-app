@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'Editar factura')
+@section('title', 'Actualizar factura #'.$factura->id)
 @section('content')
 
 <div class="row justify-content-center mt-3">
@@ -8,7 +8,7 @@
     <div class="card">
       
       <div class="card-body">
-        <h3>Nueva Factura</h3>
+        <h3>Actualizar Factura</h3>
         @include('messages')
 
         <!-- <form action="procesar.php?action=factura" method="POST"> -->
@@ -69,7 +69,7 @@
           <section class="form-detalles border-top">
             <!-- Cabezera -->
             <div class="row mb-2">
-              <div class="col-8 border-bottom- fw-bold">Código</div>
+              <div class="col-8 border-bottom- fw-bold">Servicio</div>
               <div class="col-4 border-bottom- fw-bold text-end">Importe</div>
             </div>
 
